@@ -16,10 +16,12 @@ function clicked() {
     let sal = $(`#annualsal`).val();
 
 
-    $(`#output`).append('<div>' + firstn + lastn + idnum + job + sal + '</div>');
+    $(`#outputTable`).append(`<tr><td>` + firstn + `</td><td>` + lastn + `</td><td>` + idnum + `</td><td>` + job + `</td><td>` + sal + `</td><td> <button class="delete">Delete</button></td></tr>`);
+
     $(`#firstname`).val('');
     $(`#lastname`).val('');
     $(`#idnum`).val('');
     $(`#jobtitle`).val('');
     $(`#annualsal`).val('');
 }
+``
