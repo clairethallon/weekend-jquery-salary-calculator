@@ -1,65 +1,122 @@
 console.log('JS');
 $(document).ready(onready);
 
-let salaryTotal = [];
+
 
 function onready() {
     console.log('onready function running');
-    $('#submit').on('click', clicked);
+    $('#submit').on('click', checkFields);
+    $(`#outputTable`).on(`click`, `.deleteButton`, deleteEmp);
 }//end function onready
 
-count = 0;
+let salaryTotal = [];
+let employeeArray = [];
+
 function clicked() {
 
     console.log('submit');
 
     // assign variables to input field values
-    let firstn = $(`#firstname`).val();
-    let lastn = $(`#lastname`).val();
-    let idnum = $(`#idnum`).val();
-    let job = $(`#jobtitle`).val();
-    let sal = parseInt($(`#annualsal`).val());
+    let employee = {
+        firstn: $(`#firstname`).val(),
+        lastn: $(`#lastname`).val(),
+        idnum: $(`#idnum`).val(),
+        job: $(`#jobtitle`).val(),
+        sal: parseInt($(`#annualsal`).val())
+    }
 
-    //push salary into total salary array
-    salaryTotal.push(sal);
-    //increase count to make unique ID's
-    count++;
+    // check if there are any doubled ids
+    // TRY USING FOR OF LOOP! :)
+    for (i = 0; i < employeeArray.length; i++) {
+        if (employee.idnum === employeeArray[i].idnum) {
+            alert('Duplicate IDs found.');
+            return false;
+        }
+    }
 
-    //add rows to table with employee information
-    $(`#outputTable`).append(`<tr><td>` + firstn + `</td><td>` + lastn + `</td><td>` + idnum +
-        `</td><td>` + job + `</td><td>` + sal + `</td><td> <button id = "employee` + count + `"onClick = "deleteEmp(this.id)">Delete</button></td></tr>`);
+    employeeArray.push(employee);
+    salaryTotal.push(employee.sal);
 
-    //empty input fields
-    $(`#firstname`).val('');
-    $(`#lastname`).val('');
-    $(`#idnum`).val('');
-    $(`#jobtitle`).val('');
-    $(`#annualsal`).val('');
+    // $(`#outputTable`).empty();
 
-    //run salary calculator function
+    // loop through employee array and add employees to the DOM
+    $(`#outputTable`).append(`<tr>
+        <td>${employee.firstn}</td>
+        <td>${employee.lastn}</td>
+        <td>${employee.idnum}</td>
+        <td>${employee.job}</td>
+        <td class = "salaryCell">${employee.sal}</td>
+        <td class ="deleteButton"><button>Delete</button></td></tr>`);
+    // Push salary into total salary array
+
+
+    // run salary calculator function
     salCalc(salaryTotal);
+
 }//end clicked function
 
 
-//funciton to add salary
+//funciton to calculate monthly salary cost
 function salCalc(salaryTotal) {
     //check if function is running
     console.log(salaryTotal);
-    let totalSal = 0;
+    let monthlySal = 0
+
     for (let i = 0; i < salaryTotal.length; i++) {
-        totalSal += salaryTotal[i];
+        monthlySal += salaryTotal[i] / 12;
     }
 
+    (Number(monthlySal)).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+
     //display total slaries on DOM
-    $(`#salaryTotal`).empty().append('<p>' + totalSal + '</p>');
+    if (monthlySal >= 20000) {
+        document.getElementById("monthlyTotal").className = "red";
+        console.log($(`#monthlyTotal`));
+    }
+    else {
+        document.getElementById("monthlyTotal").className = "regular";
+    }
+    $(`#monthlyTotal`).empty().append(`<p>$${monthlySal}</p>`);
 
 }// end function
 
 
 //function to delete employee row
-function deleteEmp(deleteid) {
-    //check function is running
-    console.log(deleteid);
-    //this line is not working. Only deletes the button
-    $('#' + deleteid).parent().fadeOut();
+function deleteEmp() {
+
+    let el = parseInt($(this).parent().children(`.salaryCell`).text());
+    console.log(el);
+
+    for (i = 0; i < salaryTotal.length; i++) {
+        if (el === salaryTotal[i]) {
+            salaryTotal.splice(i, 1);
+            salCalc(salaryTotal);
+        }
+
+    }
+    // target button and remove button/parent
+    $(this).parent().remove();
+
+
+
 }//end function
+
+function checkFields() {
+
+    let firstn = $(`#firstname`).val();
+    let lastn = $(`#lastname`).val();
+    let idnum = $(`#idnum`).val();
+    let job = $(`#jobtitle`).val();
+    let sal = $(`#annualsal`).val();
+
+    if (firstn.length === 0 || lastn.length === 0 ||
+        idnum.length === 0 || job.length === 0 || sal.length === 0) {
+        alert('All fields required');
+    }
+    else {
+        clicked();
+    }
+}

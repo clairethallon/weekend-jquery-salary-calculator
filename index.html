@@ -12,15 +12,18 @@
 
 <body>
     <h1>Add Employees</h1>
-    <input type="text" placeholder="First Name" id="firstname"></input>
-    <input type="text" placeholder="Last Name" id="lastname"></input>
-    <input type="number" placeholder="ID Number" id="idnum"></input>
-    <input type="text" placeholder="Job Title" id="jobtitle"></input>
-    <input type="number" placeholder="Annual Salary" id="annualsal"></input></br>
-    <button id="submit">Submit</button></br>
+    <div class="inputs">
+        <input type="text" placeholder="First Name" id="firstname"></input>
+        <input type="text" placeholder="Last Name" id="lastname"></input>
+        <input type="number" placeholder="ID Number" id="idnum"></input>
+        <input type="text" placeholder="Job Title" id="jobtitle"></input>
+        <input type="number" placeholder="Annual Salary" id="annualsal"></input></br>
+        <button id="submit">Submit</button></br>
+    </div>
+
     <div id="output">Employees</div>
 
-    <table id="outputTable" style="width:75%">
+    <table id="outputTable">
         <tr>
             <th>First Name</th>
             <th>Last Name</th>
@@ -28,10 +31,12 @@
             <th>Job Title</th>
             <th>Salary</th>
         </tr>
+
     </table>
+
     <div>
-        <p>Salary Total:</p>
-        <p id="salaryTotal"></p>
+        <p class="regular">Monthly Total:</p>
+        <p class="regular" id="monthlyTotal"></p>
     </div>
 </body>
 
