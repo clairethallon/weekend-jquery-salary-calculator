@@ -43,7 +43,7 @@ function clicked() {
     $(`#outputTable`).append(`<tr>
         <td>${employee.firstn}</td>
         <td>${employee.lastn}</td>
-        <td>${employee.idnum}</td>
+        <td class = "idNumCell">${employee.idnum}</td>
         <td>${employee.job}</td>
         <td class = "salaryCell">${employee.sal}</td>
         <td class ="deleteButton"><button>Delete</button></td></tr>`);
@@ -88,6 +88,7 @@ function salCalc(salaryTotal) {
 function deleteEmp() {
 
     let el = parseInt($(this).parent().children(`.salaryCell`).text());
+    let le = $(this).parent().children(`.idNumCell`).text()
     console.log(el);
 
     for (i = 0; i < salaryTotal.length; i++) {
@@ -97,6 +98,18 @@ function deleteEmp() {
         }
 
     }
+    for (const color of employeeArray) {
+        if (color.idnum === le) {
+            console.log(color)
+            employeeArray.splice(color, 1);
+            console.log(employeeArray);
+        }
+    }
+    // if (le === employeeArray[i].idnum) {
+    //     employeeArray.splice(i, 1);
+    //     salCalc(employeeArray);
+    // }
+
     // target button and remove button/parent
     $(this).parent().remove();
 
